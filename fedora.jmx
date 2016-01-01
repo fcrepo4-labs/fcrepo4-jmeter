@@ -3,7 +3,7 @@
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Fedora Profiling" enabled="true">
       <stringProp name="TestPlan.comments">Exercising Fedora&apos;s REST API</stringProp>
-      <boolProp name="TestPlan.functional_mode">true</boolProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
       <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
       <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
         <collectionProp name="Arguments.arguments">
@@ -65,6 +65,16 @@
           <elementProp name="LOG_DIRECTORY" elementType="Argument">
             <stringProp name="Argument.name">LOG_DIRECTORY</stringProp>
             <stringProp name="Argument.value">${__property(log,,log)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="RESPONSE_THRESHOLD_MILLIS" elementType="Argument">
+            <stringProp name="Argument.name">RESPONSE_THRESHOLD_MILLIS</stringProp>
+            <stringProp name="Argument.value">60300</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="MAX_ERRORS" elementType="Argument">
+            <stringProp name="Argument.name">MAX_ERRORS</stringProp>
+            <stringProp name="Argument.value">3</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -191,7 +201,7 @@
         <hashTree/>
         <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Controller" enabled="true">
           <stringProp name="TestPlan.comments">Execute on every 1000 requests</stringProp>
-          <stringProp name="IfController.condition">${num_requests}%99==0</stringProp>
+          <stringProp name="IfController.condition">${num_requests}%1000==0</stringProp>
           <boolProp name="IfController.evaluateAll">true</boolProp>
         </IfController>
         <hashTree>
@@ -203,9 +213,37 @@
             </collectionProp>
           </ModuleController>
           <hashTree/>
-          <DurationAssertion guiclass="DurationAssertionGui" testclass="DurationAssertion" testname="1 Second Duration Assertion" enabled="true">
-            <stringProp name="DurationAssertion.duration">1000</stringProp>
-          </DurationAssertion>
+          <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+            <stringProp name="TestPlan.comments">Fail if there are more failures than MAX_ERRORS</stringProp>
+            <stringProp name="BeanShellAssertion.query">long elapsed = SampleResult.getTime();
+
+long threshold = Long.parseLong(vars.get(&quot;RESPONSE_THRESHOLD_MILLIS&quot;));
+int maxErrors = Integer.parseInt(vars.get(&quot;MAX_ERRORS&quot;));
+
+if (vars.get(&quot;NUM_ERRORS&quot;) == null) {
+	vars.put(&quot;NUM_ERRORS&quot;, &quot;0&quot;);
+}
+
+if (elapsed &gt; threshold) {
+
+    int failureCount = Integer.parseInt(vars.get(&quot;NUM_ERRORS&quot;));
+    failureCount++;
+
+    if (failureCount &gt;= maxErrors) {
+        SampleResult.setSuccessful(false);
+        SampleResult.setResponseMessage(failureCount + &quot; requests failed to finish in &quot; + threshold + &quot; ms&quot;);
+        SampleResult.setStopTest(true);
+        log.error(&quot;Errored out!&quot;);
+        
+    } else {
+        vars.put(&quot;NUM_ERRORS&quot;, String.valueOf(failureCount));
+        log.warn(&quot;Error occurred. Elapsed millis: &quot; + elapsed + &quot;, num errors: &quot; + failureCount);
+    }
+}</stringProp>
+            <stringProp name="BeanShellAssertion.filename"></stringProp>
+            <stringProp name="BeanShellAssertion.parameters"></stringProp>
+            <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+          </BeanShellAssertion>
           <hashTree/>
         </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Create New Container" enabled="true">
@@ -218,7 +256,7 @@
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-          <stringProp name="HTTPSampler.path">rest/</stringProp>
+          <stringProp name="HTTPSampler.path">${FEDORA_4_SERVER_CONTEXT}</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -327,7 +365,7 @@
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">rest/perf/${random_resource}</stringProp>
+          <stringProp name="HTTPSampler.path">${FEDORA_4_SERVER_CONTEXT}/perf/${random_resource}</stringProp>
           <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
           <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
         </ConfigTestElement>
