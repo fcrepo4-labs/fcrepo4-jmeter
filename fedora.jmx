@@ -47,19 +47,14 @@
             <stringProp name="Argument.value">${__property(fedora_4_context,,rest)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="SEED" elementType="Argument">
-            <stringProp name="Argument.name">SEED</stringProp>
-            <stringProp name="Argument.value">${__property(seed,,42)}</stringProp>
+          <elementProp name="FILE_SIZE_MIN" elementType="Argument">
+            <stringProp name="Argument.name">FILE_SIZE_MIN</stringProp>
+            <stringProp name="Argument.value">${__property(filesize_min,,10000)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="FILE_SIZE_STD_DEV" elementType="Argument">
-            <stringProp name="Argument.name">FILE_SIZE_STD_DEV</stringProp>
-            <stringProp name="Argument.value">${__property(filesize_stddev,,819)}</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="FILE_SIZE_MEAN" elementType="Argument">
-            <stringProp name="Argument.name">FILE_SIZE_MEAN</stringProp>
-            <stringProp name="Argument.value">${__property(filesize_mean,,8192)}</stringProp>
+          <elementProp name="FILE_SIZE_MAX" elementType="Argument">
+            <stringProp name="Argument.name">FILE_SIZE_MAX</stringProp>
+            <stringProp name="Argument.value">${__property(filesize_mean,,100000)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="LOG_DIRECTORY" elementType="Argument">
@@ -267,6 +262,163 @@ if (elapsed &gt; threshold) {
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
         <hashTree>
+          <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+            <stringProp name="CounterConfig.start">0</stringProp>
+            <stringProp name="CounterConfig.end">1000</stringProp>
+            <stringProp name="CounterConfig.incr">1</stringProp>
+            <stringProp name="CounterConfig.name">num_requests</stringProp>
+            <stringProp name="CounterConfig.format"></stringProp>
+            <boolProp name="CounterConfig.per_user">false</boolProp>
+          </CounterConfig>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Fedora4 Create Binary Resource" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">stoptest</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <intProp name="LoopController.loops">-1</intProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">${NUM_THREADS}</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">${RAMP_UP_PERIOD}</stringProp>
+        <longProp name="ThreadGroup.start_time">1370357053000</longProp>
+        <longProp name="ThreadGroup.end_time">1370357053000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${FEDORA_4_SERVER_NAME}</stringProp>
+          <stringProp name="HTTPSampler.port">${FEDORA_4_SERVER_PORT}</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">http</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+          <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
+        </ConfigTestElement>
+        <hashTree/>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-Type</stringProp>
+              <stringProp name="Header.value">application/octet-stream</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
+        <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Seed Counter" enabled="true">
+          <stringProp name="CounterConfig.start">1</stringProp>
+          <stringProp name="CounterConfig.end"></stringProp>
+          <stringProp name="CounterConfig.incr">1</stringProp>
+          <stringProp name="CounterConfig.name">seed_counter</stringProp>
+          <stringProp name="CounterConfig.format"></stringProp>
+          <boolProp name="CounterConfig.per_user">false</boolProp>
+        </CounterConfig>
+        <hashTree/>
+        <BSFPreProcessor guiclass="TestBeanGUI" testclass="BSFPreProcessor" testname="Set Context" enabled="true">
+          <stringProp name="scriptLanguage">javascript</stringProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="script">vars.put(&apos;FEDORA_SERVER_CONTEXT&apos;, vars.get(&apos;FEDORA_4_SERVER_CONTEXT&apos;));</stringProp>
+        </BSFPreProcessor>
+        <hashTree/>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Controller" enabled="true">
+          <stringProp name="TestPlan.comments">Execute on every 1000 requests</stringProp>
+          <stringProp name="IfController.condition">${num_requests}%1000==0</stringProp>
+          <boolProp name="IfController.evaluateAll">true</boolProp>
+        </IfController>
+        <hashTree>
+          <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Performance Requests" enabled="true">
+            <collectionProp name="ModuleController.node_path">
+              <stringProp name="-1227702913">WorkBench</stringProp>
+              <stringProp name="1667018239">Fedora Profiling</stringProp>
+              <stringProp name="1163303380">Performance requests</stringProp>
+            </collectionProp>
+          </ModuleController>
+          <hashTree/>
+          <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+            <stringProp name="TestPlan.comments">Fail if there are more failures than MAX_ERRORS</stringProp>
+            <stringProp name="BeanShellAssertion.query">long elapsed = SampleResult.getTime();
+
+long threshold = Long.parseLong(vars.get(&quot;RESPONSE_THRESHOLD_MILLIS&quot;));
+int maxErrors = Integer.parseInt(vars.get(&quot;MAX_ERRORS&quot;));
+
+if (vars.get(&quot;NUM_ERRORS&quot;) == null) {
+	vars.put(&quot;NUM_ERRORS&quot;, &quot;0&quot;);
+}
+
+if (elapsed &gt; threshold) {
+
+    int failureCount = Integer.parseInt(vars.get(&quot;NUM_ERRORS&quot;));
+    failureCount++;
+
+    if (failureCount &gt;= maxErrors) {
+        SampleResult.setSuccessful(false);
+        SampleResult.setResponseMessage(failureCount + &quot; requests failed to finish in &quot; + threshold + &quot; ms&quot;);
+        SampleResult.setStopTest(true);
+        log.error(&quot;Errored out!&quot;);
+        
+    } else {
+        vars.put(&quot;NUM_ERRORS&quot;, String.valueOf(failureCount));
+        log.warn(&quot;Error occurred. Elapsed millis: &quot; + elapsed + &quot;, num errors: &quot; + failureCount);
+    }
+}</stringProp>
+            <stringProp name="BeanShellAssertion.filename"></stringProp>
+            <stringProp name="BeanShellAssertion.parameters"></stringProp>
+            <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+          </BeanShellAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Create Binary Resource" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">${post_body}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">${FEDORA_4_SERVER_CONTEXT}</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="Set File Content" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">import org.apache.commons.lang3.RandomStringUtils;
+
+// randomly generate file sizes evenly distributed between FILE_SIZE_MIN and FILE_SIZE_MAX
+Random random = new Random();
+int min_size = Integer.parseInt(vars.get(&quot;FILE_SIZE_MIN&quot;));
+int max_size = Integer.parseInt(vars.get(&quot;FILE_SIZE_MAX&quot;));
+
+int size = random.nextInt(max_size-min_size) + min_size;
+
+vars.put(&quot;post_body&quot;, RandomStringUtils.randomAscii(size));
+</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
           <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
             <stringProp name="CounterConfig.start">0</stringProp>
             <stringProp name="CounterConfig.end">1000</stringProp>
