@@ -47,19 +47,14 @@
             <stringProp name="Argument.value">${__property(fedora_4_context,,rest)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="SEED" elementType="Argument">
-            <stringProp name="Argument.name">SEED</stringProp>
-            <stringProp name="Argument.value">${__property(seed,,42)}</stringProp>
+          <elementProp name="FILE_SIZE_MIN" elementType="Argument">
+            <stringProp name="Argument.name">FILE_SIZE_MIN</stringProp>
+            <stringProp name="Argument.value">${__property(filesize_min,,10000)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="FILE_SIZE_STD_DEV" elementType="Argument">
-            <stringProp name="Argument.name">FILE_SIZE_STD_DEV</stringProp>
-            <stringProp name="Argument.value">${__property(filesize_stddev,,819)}</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="FILE_SIZE_MEAN" elementType="Argument">
-            <stringProp name="Argument.name">FILE_SIZE_MEAN</stringProp>
-            <stringProp name="Argument.value">${__property(filesize_mean,,8192)}</stringProp>
+          <elementProp name="FILE_SIZE_MAX" elementType="Argument">
+            <stringProp name="Argument.name">FILE_SIZE_MAX</stringProp>
+            <stringProp name="Argument.value">${__property(filesize_mean,,100000)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="LOG_DIRECTORY" elementType="Argument">
@@ -381,8 +376,16 @@ if (elapsed &gt; threshold) {
           <hashTree/>
         </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Create Binary Resource" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true"/>
-          <collectionProp name="Arguments.arguments"/>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">${post_body}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
           <stringProp name="HTTPSampler.domain"></stringProp>
           <stringProp name="HTTPSampler.port"></stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
@@ -405,14 +408,14 @@ if (elapsed &gt; threshold) {
             <boolProp name="resetInterpreter">false</boolProp>
             <stringProp name="script">import org.apache.commons.lang3.RandomStringUtils;
 
-int seed = Integer.parseInt(vars.get(&quot;SEED&quot;)) + Integer.parseInt(vars.get(&quot;seed_counter&quot;));
-Random random = new Random(seed);
-int std_deviation_size = Integer.parseInt(vars.get(&quot;FILE_SIZE_STD_DEV&quot;));
-int mean_size = Integer.parseInt(vars.get(&quot;FILE_SIZE_MEAN&quot;));
+// randomly generate file sizes evenly distributed between FILE_SIZE_MIN and FILE_SIZE_MAX
+Random random = new Random();
+int min_size = Integer.parseInt(vars.get(&quot;FILE_SIZE_MIN&quot;));
+int max_size = Integer.parseInt(vars.get(&quot;FILE_SIZE_MAX&quot;));
 
-float size = Math.abs(random.nextGaussian()) * std_deviation_size + mean_size;
+int size = random.nextInt(max_size-min_size) + min_size;
 
-vars.put(&quot;post_body&quot;, RandomStringUtils.randomAscii(Math.round(size)));
+vars.put(&quot;post_body&quot;, RandomStringUtils.randomAscii(size));
 </stringProp>
           </BeanShellPreProcessor>
           <hashTree/>
