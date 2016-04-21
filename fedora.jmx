@@ -54,7 +54,7 @@
           </elementProp>
           <elementProp name="FILE_SIZE_MAX" elementType="Argument">
             <stringProp name="Argument.name">FILE_SIZE_MAX</stringProp>
-            <stringProp name="Argument.value">${__property(filesize_mean,,100000)}</stringProp>
+            <stringProp name="Argument.value">${__property(filesize_max,,100000)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="LOG_DIRECTORY" elementType="Argument">
