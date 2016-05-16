@@ -12,19 +12,14 @@
             <stringProp name="Argument.value">${__property(loop_count,,20)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="NUM_THREADS" elementType="Argument">
-            <stringProp name="Argument.name">NUM_THREADS</stringProp>
-            <stringProp name="Argument.value">${__property(num_threads,,1)}</stringProp>
+          <elementProp name="CONTAINER_THREADS" elementType="Argument">
+            <stringProp name="Argument.name">CONTAINER_THREADS</stringProp>
+            <stringProp name="Argument.value">${__property(container_threads,,0)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="NUM_DATASTREAMS" elementType="Argument">
-            <stringProp name="Argument.name">NUM_DATASTREAMS</stringProp>
-            <stringProp name="Argument.value">${__property(num_datastreams,,1)}</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="NUM_DATASTREAM_MODIFICATIONS" elementType="Argument">
-            <stringProp name="Argument.name">NUM_DATASTREAM_MODIFICATIONS</stringProp>
-            <stringProp name="Argument.value">${__property(num_datastreams_modifications,, 5)}</stringProp>
+          <elementProp name="BINARY_THREADS" elementType="Argument">
+            <stringProp name="Argument.name">BINARY_THREADS</stringProp>
+            <stringProp name="Argument.value">${__property(binary_threads,,0)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="RAMP_UP_PERIOD" elementType="Argument">
@@ -54,7 +49,7 @@
           </elementProp>
           <elementProp name="FILE_SIZE_MAX" elementType="Argument">
             <stringProp name="Argument.name">FILE_SIZE_MAX</stringProp>
-            <stringProp name="Argument.value">${__property(filesize_mean,,100000)}</stringProp>
+            <stringProp name="Argument.value">${__property(filesize_max,,100000)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="LOG_DIRECTORY" elementType="Argument">
@@ -77,93 +72,13 @@
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
     <hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Fedora 4" enabled="true">
-        <stringProp name="ThreadGroup.on_sample_error">stoptest</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">${LOOP_COUNT}</stringProp>
-        </elementProp>
-        <stringProp name="ThreadGroup.num_threads">${NUM_THREADS}</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">${RAMP_UP_PERIOD}</stringProp>
-        <longProp name="ThreadGroup.start_time">1365510582000</longProp>
-        <longProp name="ThreadGroup.end_time">1365510582000</longProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
-        <stringProp name="ThreadGroup.delay"></stringProp>
-      </ThreadGroup>
-      <hashTree>
-        <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments"/>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain">${FEDORA_4_SERVER_NAME}</stringProp>
-          <stringProp name="HTTPSampler.port">${FEDORA_4_SERVER_PORT}</stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol">http</stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path"></stringProp>
-          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
-          <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
-        </ConfigTestElement>
-        <hashTree/>
-        <BSFPreProcessor guiclass="TestBeanGUI" testclass="BSFPreProcessor" testname="Set Context" enabled="true">
-          <stringProp name="scriptLanguage">javascript</stringProp>
-          <stringProp name="parameters"></stringProp>
-          <stringProp name="filename"></stringProp>
-          <stringProp name="script">vars.put(&apos;FEDORA_SERVER_CONTEXT&apos;, vars.get(&apos;FEDORA_4_SERVER_CONTEXT&apos;));
-</stringProp>
-        </BSFPreProcessor>
-        <hashTree/>
-        <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Fedora Module" enabled="true">
-          <collectionProp name="ModuleController.node_path">
-            <stringProp name="-1227702913">WorkBench</stringProp>
-            <stringProp name="1667018239">Fedora Profiling</stringProp>
-            <stringProp name="57355947">Fedora Basic Test</stringProp>
-          </collectionProp>
-        </ModuleController>
-        <hashTree/>
-        <ResultCollector guiclass="GraphVisualizer" testclass="ResultCollector" testname="Graph Results" enabled="true">
-          <boolProp name="ResultCollector.error_logging">false</boolProp>
-          <objProp>
-            <name>saveConfig</name>
-            <value class="SampleSaveConfiguration">
-              <time>true</time>
-              <latency>true</latency>
-              <timestamp>true</timestamp>
-              <success>true</success>
-              <label>true</label>
-              <code>true</code>
-              <message>true</message>
-              <threadName>true</threadName>
-              <dataType>true</dataType>
-              <encoding>false</encoding>
-              <assertions>false</assertions>
-              <subresults>false</subresults>
-              <responseData>false</responseData>
-              <samplerData>false</samplerData>
-              <xml>false</xml>
-              <fieldNames>true</fieldNames>
-              <responseHeaders>false</responseHeaders>
-              <requestHeaders>false</requestHeaders>
-              <responseDataOnError>false</responseDataOnError>
-              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
-              <assertionsResultsToSave>0</assertionsResultsToSave>
-              <bytes>true</bytes>
-              <threadCounts>true</threadCounts>
-            </value>
-          </objProp>
-          <stringProp name="filename">${LOG_DIRECTORY}/jmeter-fedora4-${FILE_SIZE_MEAN}-mean-${FILE_SIZE_STD_DEV}-stddev-${NUM_THREADS}-threads.csv</stringProp>
-        </ResultCollector>
-        <hashTree/>
-      </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Fedora4 Create New Containers" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">stoptest</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <intProp name="LoopController.loops">-1</intProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">${NUM_THREADS}</stringProp>
+        <stringProp name="ThreadGroup.num_threads">${CONTAINER_THREADS}</stringProp>
         <stringProp name="ThreadGroup.ramp_time">${RAMP_UP_PERIOD}</stringProp>
         <longProp name="ThreadGroup.start_time">1370357053000</longProp>
         <longProp name="ThreadGroup.end_time">1370357053000</longProp>
@@ -279,7 +194,7 @@ if (elapsed &gt; threshold) {
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <intProp name="LoopController.loops">-1</intProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">${NUM_THREADS}</stringProp>
+        <stringProp name="ThreadGroup.num_threads">${BINARY_THREADS}</stringProp>
         <stringProp name="ThreadGroup.ramp_time">${RAMP_UP_PERIOD}</stringProp>
         <longProp name="ThreadGroup.start_time">1370357053000</longProp>
         <longProp name="ThreadGroup.end_time">1370357053000</longProp>
@@ -496,7 +411,7 @@ vars.put(&quot;post_body&quot;, RandomStringUtils.randomAscii(size));
         <stringProp name="filename">/tmp/jmeter.out</stringProp>
       </ResultCollector>
       <hashTree/>
-      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Performance requests" enabled="false"/>
+      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Performance requests" enabled="true"/>
       <hashTree>
         <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="Random Variable" enabled="true">
           <stringProp name="maximumValue">2147483640</stringProp>
