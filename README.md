@@ -23,9 +23,11 @@ The following is an example running a test against a remote Fedora deployed unde
 
 This JMeter configuration can be used for several of the [test plans](https://wiki.duraspace.org/display/FF/Performance+and+Scalability+Test+Plans)
 
-By default, there are multiple thread groups enabled in `fedora.jmx`.
-
-Enabling or disabling specific thread groups and setting appropriate configuration will run different plans.
+By default, no tests will run; tests are configured via command-line variable
+definitions. To run any tests, you must set the number of threads to use to a
+non-zero number via `-Dbinary_threads` or `-Dcontainer_threads`. If both are
+set to nonzero, first the 'Create new containers' test will run, followed by an
+attempt to run the `Create binary resource` test.
 
 #### Test 1 - Size of files - large
 
@@ -44,26 +46,23 @@ data on a i7 3770.
 chunks at a time and just have the sampler read them from an InputStream, but
 that doesn't seem to be possible with the default JMeter HTTP sampler.)
 
-To run with a maximum file size of 500MB:
+To run with one thread uploading files between 10KB and 500MB to Fedora: 
 
-* Toggle thread groups so only 'Fedora4 Create Binary Resource' is enabled (can only be done via the GUI, but persists after saving)
 * Run:
 ```bash 
-JVM_ARGS=-Xmx8G ./jmeter -Dfedora_4_server=<default=localhost> -Dfedora_4_context=<default=rest> -Dfilesize_min=10000 -Dfilesize_max=500000000 -n -t <path/to/fcrepo4-jmeter>/fedora.jmx 
+JVM_ARGS=-Xmx8G jmeter -Dfedora_4_server=<default=localhost> -Dfedora_4_context=<default=rest> -Dfilesize_min=10000 -Dfilesize_max=500000000 -Dbinary_threads=1 -n -t <path/to/fcrepo4-jmeter>/fedora.jmx 
 ```
 
 #### Test 2 - Size of files - small
 
-* Toggle thread groups so only 'Fedora4 Create Binary Resource' is enabled (can only be done via the GUI, but persists after saving)
 * Run:
 ```bash 
-./jmeter -Dfedora_4_server=<default=localhost> -Dfedora_4_context=<default=rest> -Dfilesize_min=0 -Dfilesize_max=4096 -n -t <path/to/fcrepo4-jmeter>/fedora.jmx
+jmeter -Dfedora_4_server=<default=localhost> -Dfedora_4_context=<default=rest> -Dfilesize_min=0 -Dfilesize_max=4096 -Dbinary_threads=1 -n -t <path/to/fcrepo4-jmeter>/fedora.jmx
 ```
 
 #### Test 4 - Number of containers - default
 
-* Toggle thread groups so only 'Fedora4 Create New Containers' is enabled (can only be done via the GUI, but persists after saving)
 * Run:
 ```bash
-./jmeter -Dfedora_4_server=<default=localhost> -Dfedora_4_context=<default=rest> -n -t <path/to/fcrepo4-jmeter>/fedora.jmx
+jmeter -Dfedora_4_server=<default=localhost> -Dfedora_4_context=<default=rest> -Dcontainer_threads=1 -n -t <path/to/fcrepo4-jmeter>/fedora.jmx
 ```
