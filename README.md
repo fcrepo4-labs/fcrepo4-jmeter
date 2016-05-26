@@ -60,6 +60,13 @@ JVM_ARGS=-Xmx8G jmeter -Dfedora_4_server=<default=localhost> -Dfedora_4_context=
 jmeter -Dfedora_4_server=<default=localhost> -Dfedora_4_context=<default=rest> -Dfilesize_min=0 -Dfilesize_max=4096 -Dbinary_threads=1 -n -t <path/to/fcrepo4-jmeter>/fedora.jmx
 ```
 
+#### Test 3 - Number of files
+
+* Run:
+```bash
+jmeter -Dfedora_4_server=<default=localhost> -Dfedora_4_context=<default=rest> -Dfilesize_min=10000 -Dfilesize_max=100000 -Dbinary_threads=1 -n -t <path/to/fcrepo4-jmeter>/fedora.jmx
+```
+
 #### Test 4 - Number of containers - default
 
 * Run:
