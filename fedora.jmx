@@ -67,6 +67,11 @@
             <stringProp name="Argument.value">3</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="FEDORA_4_SERVER_PROTOCOL" elementType="Argument">
+            <stringProp name="Argument.name">FEDORA_4_SERVER_PROTOCOL</stringProp>
+            <stringProp name="Argument.value">${__property(fedora_4_protocol,,http)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </elementProp>
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
@@ -95,7 +100,7 @@
           <stringProp name="HTTPSampler.port">${FEDORA_4_SERVER_PORT}</stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol">http</stringProp>
+          <stringProp name="HTTPSampler.protocol">${FEDORA_4_SERVER_PROTOCOL}</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
           <stringProp name="HTTPSampler.path"></stringProp>
           <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
@@ -211,7 +216,7 @@ if (elapsed &gt; threshold) {
           <stringProp name="HTTPSampler.port">${FEDORA_4_SERVER_PORT}</stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol">http</stringProp>
+          <stringProp name="HTTPSampler.protocol">${FEDORA_4_SERVER_PROTOCOL}</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
           <stringProp name="HTTPSampler.path"></stringProp>
           <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
@@ -430,7 +435,7 @@ vars.put(&quot;post_body&quot;, RandomStringUtils.randomAscii(size));
           <stringProp name="HTTPSampler.port">${FEDORA_4_SERVER_PORT}</stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol">http</stringProp>
+          <stringProp name="HTTPSampler.protocol">${FEDORA_4_SERVER_PROTOCOL}</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
           <stringProp name="HTTPSampler.path">${FEDORA_4_SERVER_CONTEXT}/perf/${random_resource}</stringProp>
           <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
