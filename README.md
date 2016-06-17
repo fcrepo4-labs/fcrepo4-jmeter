@@ -19,6 +19,11 @@ The following is an example running a test against a remote Fedora deployed unde
 ./jmeter -Dfedora_4_server=52.90.98.146 -Dfedora_4_context=fcrepo/rest -n -t fedora.jmx
 ```
 
+If Fedora is deployed using HTTPS, specify the protocol and port on the command line:
+```bash
+./jmeter -Dfedora_4_protocol=https -Dfedora_4_port=8443 -Dfedora_4_server=<default=localhost> -Dfedora_4_context=<default=rest> -n -t <path/to/fcrepo4-jmeter>/fedora.jmx
+```
+
 ### Running specific performance tests
 
 This JMeter configuration can be used for several of the [test plans](https://wiki.duraspace.org/display/FF/Performance+and+Scalability+Test+Plans)
