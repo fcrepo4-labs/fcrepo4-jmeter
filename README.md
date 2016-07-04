@@ -83,5 +83,5 @@ jmeter -Dfedora_4_server=<default=localhost> -Dfedora_4_context=<default=rest> -
 
 * Run:
 ```bash
-jmeter -Dfedora_4_server=<default=localhost> -Dfedora_4_context=<default=rest> -Dcontainer_rdf_threads=1 -n -t <path/to/fcrepo4-jmeter>/fedora.jmx
+jmeter -Dfedora_4_server=<default=localhost> -Dfedora_4_context=<default=rest>  -Dresource_directory=<default=.> -Dcontainer_rdf_threads=1 -n -t <path/to/fcrepo4-jmeter>/fedora.jmx
 ```

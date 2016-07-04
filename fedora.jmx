@@ -77,6 +77,11 @@
             <stringProp name="Argument.value">${__property(fedora_4_protocol,,http)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="RESOURCE_DIRECTORY" elementType="Argument">
+            <stringProp name="Argument.name">RESOURCE_DIRECTORY</stringProp>
+            <stringProp name="Argument.value">${__property(resource_directory,,.)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </elementProp>
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
@@ -458,8 +463,8 @@ if (elapsed &gt; threshold) {
           <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
           <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
             <collectionProp name="HTTPFileArgs.files">
-              <elementProp name="./sample.ttl" elementType="HTTPFileArg">
-                <stringProp name="File.path">./sample.ttl</stringProp>
+              <elementProp name="${RESOURCE_DIRECTORY}/sample.ttl" elementType="HTTPFileArg">
+                <stringProp name="File.path">${RESOURCE_DIRECTORY}/sample.ttl</stringProp>
                 <stringProp name="File.paramname"></stringProp>
                 <stringProp name="File.mimetype">text/turtle</stringProp>
               </elementProp>
