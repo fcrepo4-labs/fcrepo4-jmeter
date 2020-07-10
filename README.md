@@ -10,7 +10,7 @@ Test plans can be found [here](https://wiki.duraspace.org/display/FF/Performance
 
 To run these Fedora [JMeter](http://jmeter.apache.org/) tests, download JMeter and execute:
 ```bash
-./jmeter -Dfedora_4_server=<default=localhost> -Dfedora_4_context=<default=rest> -n -t <path/to/fcrepo4-jmeter>/fedora.jmx
+./jmeter -Dfedora_4_username=<default=fedoraAdmin> -Dfedora_4_password=<default=fedoraAdmin> -Dfedora_4_server=<default=localhost> -Dfedora_4_context=<default=rest> -n -t <path/to/fcrepo4-jmeter>/fedora.jmx
 ```
 ..where`-n` specifies "non-GUI mode", and `-t` specifies the location of the test "jmx" file.
 
@@ -21,7 +21,7 @@ The following is an example running a test against a remote Fedora deployed unde
 
 If Fedora is deployed using HTTPS, specify the protocol and port on the command line:
 ```bash
-./jmeter -Dfedora_4_protocol=https -Dfedora_4_port=8443 -Dfedora_4_server=<default=localhost> -Dfedora_4_context=<default=rest> -n -t <path/to/fcrepo4-jmeter>/fedora.jmx
+./jmeter -Dfedora_4_username=<default=fedoraAdmin> -Dfedora_4_password=<default=fedoraAdmin> -Dfedora_4_protocol=https -Dfedora_4_port=8443 -Dfedora_4_server=<default=localhost> -Dfedora_4_context=<default=rest> -n -t <path/to/fcrepo4-jmeter>/fedora.jmx
 ```
 
 ### Running specific performance tests
@@ -55,7 +55,7 @@ To run with one thread uploading files between 10KB and 500MB to Fedora:
 
 * Run:
 ```bash 
-JVM_ARGS=-Xmx8G jmeter -Dfedora_4_server=<default=localhost> -Dfedora_4_context=<default=rest> -Dfilesize_min=10000 -Dfilesize_max=500000000 -Dbinary_threads=1 -n -t <path/to/fcrepo4-jmeter>/fedora.jmx 
+JVM_ARGS=-Xmx8G jmeter -Dfedora_4_username=<default=fedoraAdmin> -Dfedora_4_password=<default=fedoraAdmin> -Dfedora_4_server=<default=localhost> -Dfedora_4_context=<default=rest> -Dfilesize_min=10000 -Dfilesize_max=500000000 -Dbinary_threads=1 -n -t <path/to/fcrepo4-jmeter>/fedora.jmx
 ```
 
 #### Test 2 - Size of files - small
