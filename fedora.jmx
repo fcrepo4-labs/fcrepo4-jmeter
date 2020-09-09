@@ -141,6 +141,19 @@
           <boolProp name="AuthManager.controlledByThreadGroup">false</boolProp>
         </AuthManager>
         <hashTree/>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="&lt;http" elementType="Header">
+              <stringProp name="Header.name">Link</stringProp>
+              <stringProp name="Header.value">&lt;http://www.w3.org/ns/ldp#BasicContainer&gt;;rel=&quot;type&quot;</stringProp>
+            </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-Type</stringProp>
+              <stringProp name="Header.value">text/turtle</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
         <BSFPreProcessor guiclass="TestBeanGUI" testclass="BSFPreProcessor" testname="Set Context" enabled="true">
           <stringProp name="scriptLanguage">javascript</stringProp>
           <stringProp name="parameters"></stringProp>
@@ -303,9 +316,10 @@ if (elapsed &gt; threshold) {
         <hashTree>
           <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Performance Requests" enabled="true">
             <collectionProp name="ModuleController.node_path">
-              <stringProp name="-1227702913">WorkBench</stringProp>
+              <stringProp name="764597751">Test Plan</stringProp>
               <stringProp name="1667018239">Fedora Profiling</stringProp>
-              <stringProp name="1163303380">Performance requests</stringProp>
+              <stringProp name="797872625">Fedora4 Create New Containers</stringProp>
+              <stringProp name="1300977279">If Controller</stringProp>
             </collectionProp>
           </ModuleController>
           <hashTree/>
@@ -343,13 +357,13 @@ if (elapsed &gt; threshold) {
           <hashTree/>
         </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Create Binary Resource" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">${post_body}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
               </elementProp>
             </collectionProp>
           </elementProp>
